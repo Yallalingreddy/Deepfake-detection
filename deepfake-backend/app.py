@@ -30,7 +30,10 @@ app = FastAPI(title="Deepfake Detection API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],   # Set to your Frontend URL to be safe
+    allow_origins=[
+        "http://localhost:5173",
+        "https://deepfakessy.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
