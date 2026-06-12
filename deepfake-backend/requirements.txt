@@ -1,42 +1,6 @@
-# Local package
--e .
-
-# Core ML and Deep Learning
-tensorflow==2.20.0
-numpy>=1.26.0
-scipy>=1.12.0
-pandas>=2.2.0
-scikit-learn>=1.4.0
-
-# GPU & CUDA support (TensorFlow 2.20)
-nvidia-cudnn-cu12==9.5.0.50
-nvidia-cublas-cu12==12.5.3.2
-nvidia-cuda-nvcc-cu12==12.6.77
-nvidia-cuda-runtime-cu12==12.5.82
-nvidia-cufft-cu12==11.2.3.61
-nvidia-curand-cu12==10.3.7.77
-nvidia-cusolver-cu12==11.6.3.83
-nvidia-cusparse-cu12==12.5.2.23
-nvidia-nccl-cu12==2.21.5
-nvidia-nvjitlink-cu12==12.6.85
-
-# Image Processing and Augmentation
-opencv-python==4.10.0.84
-Pillow>=10.0.0
-imgaug>=0.4.0
-albumentations>=1.4.0
-
-# Visualization
-matplotlib>=3.8.0
-seaborn>=0.13.0
-plotly>=5.20.0
-
-# Utilities
-tqdm>=4.66.0
-python-dotenv>=1.0.1
-click>=8.1.7
-PyYAML>=6.0.2
-
-# Deep Learning Tools
-h5py>=3.10.0
-tensorboard>=2.20.0
+fastapi
+uvicorn
+python-multipart
+Pillow
+numpy
+tensorflow-cpu
