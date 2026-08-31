@@ -44,6 +44,7 @@ deepfake-image-detection/
 ├── deepfake-backend/      <- Python ML backend
 │   ├── app.py             <- FastAPI inference server
 │   ├── requirements.txt   <- Python dependencies
+│   ├── android-app/       <- Structure for Android App
 │   ├── src/               <- Source code for ML pipeline
 │   │   ├── data/          <- Data loading & preprocessing
 │   │   ├── features/      <- Feature engineering & augmentation
@@ -119,6 +120,25 @@ The model is fully compatible with TensorFlow Lite.
 
 * **Float32 Size:** 15.53 MB
 * **Quantized Size:** 4.36 MB
+
+To evaluate real-world edge deployment viability beyond desktop emulation, we con-
+ducted empirical benchmarking directly on physical mobile hardware. Tests were
+executed on a commercial smartphone powered by a MediaTek Dimensity 1200
+System-on-Chip (SoC) using the native C++ TensorFlow Lite benchmark binary
+across 4 CPU threads with the XNNPACK delegate.
+
+## Mobile Benchmark Results
+<img width="1905" height="952" alt="Screenshot 2026-08-31 144113" src="https://github.com/user-attachments/assets/3fd74a6a-c16c-49e8-8425-1ab93c3ad559" />
+<img width="1911" height="910" alt="Screenshot 2026-08-31 144229" src="https://github.com/user-attachments/assets/fb7d9a61-a38b-4b3c-bfbe-b4a133fc2b97" />
+
+
+## Android On-Device App Prototype
+
+A native Android application prototype is included under `/android-app`.
+
+1. Open Android Studio and select **Open** -> Navigate to the `/android-app` folder.
+2. Ensure `deepfake_detector_mobile_int8.tflite` is placed in `app/src/main/assets/`.
+3. Connect your Android device via USB debugging and click **Run (Shift + F10)**.
 
 ##  License
 
