@@ -3,112 +3,64 @@
 @tailwind utilities;
 
 /* =========================================
-   1. SIDEBAR LAYOUT
+   1. GLOBAL RESET & SCROLLBAR
    ========================================= */
-
-.sidebar {
-  width: 280px;
-  background: #020617;
-  padding: 32px 26px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100vh; /* Ensure it fills height if needed */
+body {
+  background-color: #020617;
+  color: white;
+  overflow-x: hidden;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  font-size: 24px;
-  font-weight: 700;
-  color: white; /* Added to ensure visibility */
-  margin-bottom: 50px;
+/* Custom Scrollbar for the Visualizations Modal */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.sidebar-footer {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 15px;
-  color: #cbd5e1;
-  opacity: 0.85;
-  padding-top: 20px;
+::-webkit-scrollbar-track {
+  background: #0f172a; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155; 
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569; 
 }
 
 /* =========================================
-   2. NAVIGATION & BUTTONS
+   2. AUTH PAGE FIXES
    ========================================= */
 
-.sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.sidebar-btn {
-  /* Layout */
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 14px 20px;
-  border-radius: 14px;
-  position: relative; /* Essential for the active-pill absolute positioning */
-  
-  /* Typography & Color */
-  font-size: 18px;
-  font-weight: 500;
-  color: #cbd5e1;
-  
-  /* Animation */
-  transition: all 0.25s ease;
-  cursor: pointer;
-}
-
-.sidebar-btn svg {
-  width: 22px;
-  height: 22px;
-}
-
-.sidebar-btn:hover {
-  background: rgba(255, 255, 255, 0.07);
-  color: white;
-  transform: translateX(4px);
-}
-
-/* Active States */
-.sidebar-active {
-  color: rgb(255, 255, 255);
-}
-
-/* If you use a separate div for the background glow */
-.active-pill {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, #6366f1, #22d3ee);
-  border-radius: 14px;
-  z-index: -1;
-  opacity: 0.18;
-}
-
-/* Fallback: If you just add an .active class to the button directly */
-.sidebar-btn.active {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(34, 211, 238, 0.2));
-  color: white;
-  border: 1px solid rgba(99, 102, 241, 0.3);
+/* Prevents the browser's auto-fill from turning the inputs white/yellow */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px #020617 inset !important;
+    -webkit-text-fill-color: white !important;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 /* =========================================
-   3. DASHBOARD COMPONENTS (Cards, Loaders)
+   3. DASHBOARD COMPONENTS
    ========================================= */
 
-/* Cards */
+/* Glassmorphism Card Style */
 .card {
-  background: rgba(2, 6, 23, 0.66); /* converted #020617aa to rgba for better support */
+  background: rgba(15, 23, 42, 0.6);
   backdrop-filter: blur(12px);
-  padding: 26px;
-  border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  border-color: rgba(99, 102, 241, 0.2); /* Indigo tint on hover */
 }
 
 .card-title {
@@ -117,62 +69,57 @@
   color: white;
   margin-bottom: 16px;
 }
-/* Update this specific class */
-.preview-img {
-  width: 100%;             /* Take full width of the card */
-  height: 250px;           /* Fixed medium height */
-  object-fit: contain;     /* KEY FIX: This ensures the whole image is visible */
-  background: rgba(0,0,0,0.2); /* distinct background for non-square images */
-  border-radius: 14px;
-  margin-bottom: 12px;
-  border: 1px solid rgba(255,255,255,0.1);
-}
 
-/* History */
+/* History Card */
 .history-card {
   display: flex;
   align-items: center;
-  gap: 14px;
-  background: rgba(2, 6, 23, 0.66);
-  padding: 14px;
-  border-radius: 14px;
+  gap: 16px;
+  background: rgba(15, 23, 42, 0.4);
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s;
 }
 
 .history-card img {
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   border-radius: 8px;
   object-fit: cover;
 }
 
 /* =========================================
-   4. UTILITIES & ELEMENTS
+   4. UTILITIES & ANIMATIONS
    ========================================= */
 
-/* Buttons */
+/* Primary Button Gradient */
 .primary-btn {
-  margin-top: 10px;
   background: linear-gradient(135deg, #6366f1, #4f46e5);
-  padding: 10px 22px;
+  padding: 12px 24px;
   border-radius: 12px;
   font-weight: 600;
   color: white;
-  transition: 0.25s;
+  transition: all 0.2s;
   border: none;
   cursor: pointer;
+  box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39);
 }
 
 .primary-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.23);
 }
 
-/* Loaders */
+.primary-btn:active {
+  transform: translateY(1px);
+}
+
+/* Loader Animation (Used in Dashboard) */
 .loader {
-  margin-top: 16px;
-  width: 32px;
-  height: 32px;
-  border: 4px solid #6366f1;
+  width: 24px;
+  height: 24px;
+  border: 3px solid #6366f1;
   border-top-color: transparent;
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -182,47 +129,16 @@
   to { transform: rotate(360deg); }
 }
 
-/* Pills / Badges */
-.pill {
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: bold;
-  color: white;
-  display: inline-block;
-}
-
-.pill-green { background: #16a34a; }
-.pill-red   { background: #dc2626; }
-
+/* Live Badge Pulse */
 .badge-online {
-  background: #16a34a;
-  padding: 6px 14px;
+  background: rgba(22, 163, 74, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(22, 163, 74, 0.3);
+  padding: 6px 12px;
   border-radius: 999px;
   font-size: 12px;
-  color: white;
-  font-weight: 600;
-}
-
-/* Progress Bars */
-.progress {
-  margin-top: 10px;
-  height: 8px;
-  background: #020617;
-  border-radius: 999px;
-  overflow: hidden;
-  position: relative;
-}
-/* Progress Fill */
-.progress-fill {
-  height: 100%;
-  border-radius: 999px;
-  transition: width 0.6s ease-in-out;
-}
-
-/* Optional: Add a child element for the actual fill */
-.progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #6366f1, #22d3ee);
-  border-radius: 999px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }

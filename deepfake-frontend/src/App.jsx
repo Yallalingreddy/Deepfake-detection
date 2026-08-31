@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
@@ -14,7 +14,22 @@ import {
   BarChart3,
   Github,
   PieChart,
-  X
+  X,
+  LogOut,
+  Mail,
+  Lock,
+  User,
+  ArrowRight,
+  Loader2,
+  Trash2,
+  Search,
+  Filter,
+  Download,
+  Bell,         // New
+  Moon,         // New
+  Smartphone,   // New
+  Save,         // New
+  Sliders       // New
 } from "lucide-react";
 
 // --- IMPORT IMAGES (Must match your folder structure exactly) ---
@@ -26,16 +41,160 @@ import chart5 from './datavisual_pics/chart5.jpeg';
 import predictionGrid from './datavisual_pics/prediction_grid.jpeg';
 import srmAnaly from './datavisual_pics/srm_analy.jpeg';
 
-// --- 1. Visualizations Modal Component ---
+// ==================================================================================
+//  1. AUTHENTICATION COMPONENT
+// ==================================================================================
+
+const AuthPage = ({ onLogin }) => {
+  const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!email || !password) return alert("Please fill in all fields");
+    
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      onLogin({ email, name: email.split("@")[0] });
+    }, 1500);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#020617] flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[120px]" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[120px]" />
+
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-md bg-[#0f172a]/80 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl relative z-10"
+      >
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <div className="bg-indigo-500/10 p-3 rounded-2xl border border-indigo-500/20">
+              <ShieldCheck className="text-indigo-400 w-10 h-10" />
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold text-white mb-2">DeepScan.AI</h1>
+          <p className="text-slate-400">
+            {isLogin ? "Welcome back! Please enter your details." : "Create an account to start detecting."}
+          </p>
+        </div>
+
+        {/* FIXED: Removed duplicate 'fill' attributes to fix VS Code error */}
+        <button 
+          onClick={() => alert("Google Auth integration requires Firebase/Backend setup.")}
+          className="w-full bg-white text-slate-900 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-3 hover:bg-slate-100 transition-colors mb-6"
+        >
+          <svg className="w-5 h-5" viewBox="0 0 24 24">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Sign in with Google
+        </button>
+
+        <div className="relative flex items-center gap-4 mb-6">
+          <div className="h-px bg-white/10 flex-1" />
+          <span className="text-slate-500 text-sm font-medium">OR</span>
+          <div className="h-px bg-white/10 flex-1" />
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {!isLogin && (
+            <div>
+              <label className="block text-sm font-medium text-slate-400 mb-1.5 ml-1">Full Name</label>
+              <div className="relative group">
+                <User className="absolute left-4 top-3.5 text-slate-500 group-focus-within:text-indigo-400 transition-colors" size={20} />
+                <input 
+                  type="text" 
+                  placeholder="John Doe"
+                  className="w-full bg-[#020617] border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder:text-slate-600"
+                />
+              </div>
+            </div>
+          )}
+
+          <div>
+            <label className="block text-sm font-medium text-slate-400 mb-1.5 ml-1">Email Address</label>
+            <div className="relative group">
+              <Mail className="absolute left-4 top-3.5 text-slate-500 group-focus-within:text-indigo-400 transition-colors" size={20} />
+              <input 
+                type="email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="name@example.com"
+                className="w-full bg-[#020617] border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder:text-slate-600"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-400 mb-1.5 ml-1">Password</label>
+            <div className="relative group">
+              <Lock className="absolute left-4 top-3.5 text-slate-500 group-focus-within:text-indigo-400 transition-colors" size={20} />
+              <input 
+                type="password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full bg-[#020617] border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder:text-slate-600"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between text-sm mt-2">
+            <label className="flex items-center gap-2 text-slate-400 cursor-pointer">
+              <input type="checkbox" className="rounded border-white/10 bg-[#020617] text-indigo-500 focus:ring-indigo-500/20" />
+              Remember me
+            </label>
+            {isLogin && <a href="#" className="text-indigo-400 hover:text-indigo-300">Forgot password?</a>}
+          </div>
+
+          <button 
+            type="submit" 
+            disabled={loading}
+            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg hover:shadow-indigo-500/25 flex items-center justify-center gap-2 mt-6"
+          >
+            {loading ? <Loader2 className="animate-spin" /> : (
+              <>
+                {isLogin ? "Sign In" : "Create Account"}
+                <ArrowRight size={20} />
+              </>
+            )}
+          </button>
+        </form>
+
+        <p className="text-center mt-8 text-slate-400">
+          {isLogin ? "Don't have an account?" : "Already have an account?"} 
+          <button 
+            onClick={() => setIsLogin(!isLogin)} 
+            className="text-indigo-400 font-semibold ml-2 hover:underline"
+          >
+            {isLogin ? "Sign up" : "Log in"}
+          </button>
+        </p>
+      </motion.div>
+    </div>
+  );
+};
+
+// ==================================================================================
+//  2. CORE APP COMPONENTS
+// ==================================================================================
+
 const VisualizationsModal = ({ onClose }) => {
-  
   const visualData = {
     charts: [
-      { title: "Confusion Matrix", src: chart1 },
-      { title: "Loss Graph",       src: chart2 },
-      { title: "Accuracy Curve",   src: chart3 },
-      { title: "ROC Curve",        src: chart4 },
-      { title: "F1 Score Trend",   src: chart5 },
+      { title: "ROC Curve", src: chart1 },
+      { title: "Calibration Curve",       src: chart2 },
+      { title: "Confusion Matrix",   src: chart3 },
+      { title: "Precision_Recall Curve ",        src: chart4 },
+      { title: "Prediction-Distribution",   src: chart5 },
     ],
     prediction: {
       title: "Prediction Confidence Grid",
@@ -73,7 +232,6 @@ const VisualizationsModal = ({ onClose }) => {
           <PieChart className="text-pink-500" /> Data Visualizations
         </h3>
 
-        {/* --- SECTION 1: Charts & Graphs --- */}
         <div className="mb-10">
           <h4 className="text-xl font-semibold text-indigo-400 mb-4 flex items-center gap-2">
             <span className="bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded text-sm">01</span>
@@ -82,7 +240,6 @@ const VisualizationsModal = ({ onClose }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {visualData.charts.map((img, index) => (
               <div key={index} className="space-y-2 group">
-                {/* UPDATED: Changed h-48 to h-56 and object-cover to object-contain */}
                 <div className="rounded-xl overflow-hidden border border-white/10 bg-black/40 relative h-56 flex items-center justify-center p-2">
                   <img 
                     src={img.src} 
@@ -96,7 +253,6 @@ const VisualizationsModal = ({ onClose }) => {
           </div>
         </div>
 
-        {/* --- SECTION 2: Prediction Grid --- */}
         <div className="mb-10">
           <h4 className="text-xl font-semibold text-cyan-400 mb-4 flex items-center gap-2">
             <span className="bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded text-sm">02</span>
@@ -112,7 +268,6 @@ const VisualizationsModal = ({ onClose }) => {
           <p className="mt-2 text-sm text-slate-400 text-center">{visualData.prediction.title}</p>
         </div>
 
-        {/* --- SECTION 3: SRM Noise Residual --- */}
         <div className="mb-4">
           <h4 className="text-xl font-semibold text-emerald-400 mb-4 flex items-center gap-2">
              <span className="bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded text-sm">03</span>
@@ -133,17 +288,17 @@ const VisualizationsModal = ({ onClose }) => {
   );
 };
 
-// --- 2. Sidebar Button Component ---
-const SidebarButton = ({ icon: Icon, label, value, activePage, setPage }) => (
+const SidebarButton = ({ icon: Icon, label, value, activePage, setPage, isLogout, onClick }) => (
   <button
-    onClick={() => setPage(value)}
+    onClick={isLogout ? onClick : () => setPage(value)}
     className={`relative flex items-center gap-3 px-5 py-3 rounded-xl transition-all duration-300 w-full text-left font-medium 
-      ${activePage === value ? "text-white" : "text-slate-400 hover:bg-white/5 hover:text-white"}`}
+      ${isLogout ? "text-red-400 hover:bg-red-500/10 mt-auto" : 
+      activePage === value ? "text-white" : "text-slate-400 hover:bg-white/5 hover:text-white"}`}
   >
     <Icon size={20} />
     <span className="text-base">{label}</span>
     
-    {activePage === value && (
+    {!isLogout && activePage === value && (
       <motion.div
         layoutId="active-pill"
         className="absolute inset-0 bg-gradient-to-r from-indigo-600/20 to-cyan-500/20 border border-indigo-500/30 rounded-xl -z-10"
@@ -154,7 +309,6 @@ const SidebarButton = ({ icon: Icon, label, value, activePage, setPage }) => (
   </button>
 );
 
-// --- 3. Result Card Component ---
 const ResultCard = ({ result }) => {
   const isHighConfidence = result.confidence > 80;
   const barColor = isHighConfidence ? "bg-green-500" : "bg-red-500";
@@ -209,7 +363,126 @@ const ResultCard = ({ result }) => {
   );
 };
 
-// --- 4. Dashboard Page ---
+// --- SETTINGS PAGE (NEWLY ADDED) ---
+const SettingsPage = ({ user, onDeleteAccount }) => {
+  const [sensitivity, setSensitivity] = useState(80);
+  const [notifications, setNotifications] = useState(true);
+  const [autoSave, setAutoSave] = useState(true);
+
+  return (
+    <div className="max-w-4xl mx-auto space-y-8 pb-10">
+      <div className="flex items-center gap-4 mb-2">
+        <Settings className="text-indigo-400" size={32} />
+        <h2 className="text-3xl font-bold text-white">Settings & Preferences</h2>
+      </div>
+
+      {/* Account Section */}
+      <div className="card p-6 md:p-8 bg-[#0f172a]/50 backdrop-blur-md border border-white/10">
+        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+          <User size={20} className="text-slate-400" /> Account Information
+        </h3>
+        <div className="flex items-center gap-5">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center font-bold text-2xl text-white shadow-lg">
+            {user.email[0].toUpperCase()}
+          </div>
+          <div>
+            <p className="text-lg font-semibold text-white">{user.name || "User"}</p>
+            <p className="text-slate-400">{user.email}</p>
+            <button className="text-xs text-indigo-400 hover:text-indigo-300 mt-1 font-medium">
+              Edit Profile
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Detection Settings */}
+      <div className="card p-6 md:p-8 bg-[#0f172a]/50 backdrop-blur-md border border-white/10">
+        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+          <Sliders size={20} className="text-slate-400" /> Detection Configuration
+        </h3>
+        <div className="space-y-6">
+           <div>
+             <div className="flex justify-between mb-2">
+                <label className="text-slate-300 font-medium">Confidence Threshold</label>
+                <span className="text-indigo-400 font-bold">{sensitivity}%</span>
+             </div>
+             <input 
+               type="range" 
+               min="50" max="99" 
+               value={sensitivity} 
+               onChange={(e) => setSensitivity(e.target.value)}
+               className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+             />
+             <p className="text-xs text-slate-500 mt-2">Adjusting this changes how strict the "Fake" detection logic applies.</p>
+           </div>
+           
+           <div className="flex items-center justify-between p-4 bg-black/20 rounded-xl border border-white/5">
+             <div className="flex items-center gap-3">
+                <Save className="text-slate-400" size={20} />
+                <div>
+                  <p className="text-white font-medium">Auto-save History</p>
+                  <p className="text-xs text-slate-500">Automatically save detection results locally.</p>
+                </div>
+             </div>
+             <div 
+               onClick={() => setAutoSave(!autoSave)}
+               className={`w-12 h-6 rounded-full cursor-pointer p-1 transition-colors ${autoSave ? 'bg-green-500' : 'bg-slate-700'}`}
+             >
+                <div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${autoSave ? 'translate-x-6' : 'translate-x-0'}`} />
+             </div>
+           </div>
+        </div>
+      </div>
+
+      {/* App Preferences */}
+      <div className="card p-6 md:p-8 bg-[#0f172a]/50 backdrop-blur-md border border-white/10">
+        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+          <Smartphone size={20} className="text-slate-400" /> Application Preferences
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+           <div className="flex items-center justify-between p-4 bg-black/20 rounded-xl border border-white/5">
+             <div className="flex items-center gap-3">
+                <Bell className="text-slate-400" size={20} />
+                <span className="text-white font-medium">Notifications</span>
+             </div>
+             <div 
+               onClick={() => setNotifications(!notifications)}
+               className={`w-12 h-6 rounded-full cursor-pointer p-1 transition-colors ${notifications ? 'bg-indigo-500' : 'bg-slate-700'}`}
+             >
+                <div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${notifications ? 'translate-x-6' : 'translate-x-0'}`} />
+             </div>
+           </div>
+
+           <div className="flex items-center justify-between p-4 bg-black/20 rounded-xl border border-white/5">
+             <div className="flex items-center gap-3">
+                <Moon className="text-slate-400" size={20} />
+                <span className="text-white font-medium">Dark Mode</span>
+             </div>
+             <span className="text-xs text-slate-500 bg-white/10 px-2 py-1 rounded">Always On</span>
+           </div>
+        </div>
+      </div>
+
+      {/* Danger Zone */}
+      <div className="card p-6 md:p-8 border border-red-500/20 bg-red-500/5 backdrop-blur-md">
+         <h3 className="text-xl font-bold mb-4 text-red-400 flex items-center gap-2">Danger Zone</h3>
+         <div className="flex justify-between items-center">
+            <div>
+              <p className="text-white font-medium">Delete Account</p>
+              <p className="text-xs text-slate-500">Permanently remove all data and history.</p>
+            </div>
+            <button 
+              onClick={onDeleteAccount}
+              className="px-4 py-2 border border-red-500/50 text-red-400 rounded-lg hover:bg-red-500/10 transition-colors text-sm font-bold"
+            >
+              Delete Account
+            </button>
+         </div>
+      </div>
+    </div>
+  );
+};
+
 const Dashboard = ({ file, setFile, preview, setPreview, handleUpload, loading, result }) => (
   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
     <div className="card flex flex-col">
@@ -269,60 +542,139 @@ const Dashboard = ({ file, setFile, preview, setPreview, handleUpload, loading, 
   </div>
 );
 
-// --- 5. History Page ---
-const HistoryList = ({ history }) => (
-  <div className="space-y-6 max-w-4xl mx-auto pb-10">
-    <div className="flex justify-between items-end mb-6">
-      <h2 className="text-2xl font-bold flex items-center gap-2">
-        <History className="text-indigo-400"/> Recent Analysis
-      </h2>
-      <span className="text-sm text-slate-500">{history.length} items</span>
-    </div>
+const HistoryList = ({ history, onDeleteItem, onClearHistory }) => {
+  const [filter, setFilter] = useState("all"); 
+  const [searchTerm, setSearchTerm] = useState("");
 
-    {history.length === 0 ? (
-      <div className="text-center py-20 text-slate-500 bg-black/20 rounded-2xl border border-white/5">
-        <History size={48} className="mx-auto mb-4 opacity-20"/>
-        <p>No history available yet.</p>
-      </div>
-    ) : (
-      <div className="grid gap-4">
-        {history.map((item) => (
-          <motion.div
-            key={item.id}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="history-card group hover:bg-slate-800/50 transition-colors"
-          >
-            <img src={item.image} alt="History thumbnail" className="border border-white/10" />
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3">
-                <span className={`text-sm font-bold px-2 py-0.5 rounded ${item.prediction === 'REAL' ? 'text-green-400 bg-green-500/10' : 'text-red-400 bg-red-500/10'}`}>
-                  {item.prediction}
-                </span>
-                <span className="text-xs text-slate-500 font-mono">
-                  {new Date(item.id).toLocaleTimeString()}
-                </span>
-              </div>
-              <div className="w-full bg-slate-900 h-1.5 mt-2 rounded-full overflow-hidden opacity-50 group-hover:opacity-100 transition-opacity">
-                 <div className={`h-full ${item.confidence > 80 ? 'bg-green-500' : 'bg-red-500'}`} style={{width: `${item.confidence}%`}} />
-              </div>
+  const filteredHistory = history.filter(item => {
+    const matchesFilter = filter === "all" || item.prediction === filter;
+    const matchesSearch = item.prediction.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          new Date(item.id).toLocaleDateString().includes(searchTerm);
+    return matchesFilter && matchesSearch;
+  });
+
+  return (
+    <div className="space-y-6 max-w-4xl mx-auto pb-10">
+      
+      <div className="flex flex-col md:flex-row justify-between items-end md:items-center gap-4 mb-6">
+        <div>
+          <h2 className="text-2xl font-bold flex items-center gap-2">
+            <History className="text-indigo-400"/> Recent Analysis
+          </h2>
+          <p className="text-sm text-slate-500 mt-1">
+            {history.length} total items • {filteredHistory.length} shown
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2 w-full md:w-auto">
+          {history.length > 0 && (
+            <button 
+              onClick={onClearHistory}
+              className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+              title="Clear All History"
+            >
+              <Trash2 size={20} />
+            </button>
+          )}
+
+          <div className="relative group">
+            <Search className="absolute left-3 top-2.5 text-slate-500 group-focus-within:text-indigo-400" size={16}/>
+            <input 
+              type="text" 
+              placeholder="Search..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="bg-[#0f172a] border border-white/10 rounded-lg py-2 pl-9 pr-4 text-sm focus:outline-none focus:border-indigo-500 w-full md:w-40"
+            />
+          </div>
+
+          <div className="relative">
+            <div className="absolute left-3 top-2.5 pointer-events-none">
+              <Filter className="text-slate-500" size={16}/>
             </div>
-            <span className="font-mono text-slate-400 font-bold">{item.confidence.toFixed(1)}%</span>
-          </motion.div>
-        ))}
+            <select 
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="bg-[#0f172a] border border-white/10 rounded-lg py-2 pl-9 pr-4 text-sm focus:outline-none focus:border-indigo-500 appearance-none cursor-pointer"
+            >
+              <option value="all">All</option>
+              <option value="REAL">Real</option>
+              <option value="FAKE">Fake</option>
+            </select>
+          </div>
+        </div>
       </div>
-    )}
-  </div>
-);
 
-// --- 6. About Page ---
+      {history.length === 0 ? (
+        <div className="text-center py-20 text-slate-500 bg-black/20 rounded-2xl border border-white/5 border-dashed">
+          <History size={48} className="mx-auto mb-4 opacity-20"/>
+          <p>No history available yet.</p>
+          <p className="text-xs text-slate-600 mt-2">Run a detection to see results here.</p>
+        </div>
+      ) : filteredHistory.length === 0 ? (
+        <div className="text-center py-10 text-slate-500">
+           <p>No matches found for your search.</p>
+        </div>
+      ) : (
+        <div className="grid gap-4">
+          {filteredHistory.map((item) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="history-card group hover:bg-slate-800/50 transition-colors flex items-center justify-between"
+            >
+              <div className="flex items-center gap-4 flex-1">
+                <img src={item.image} alt="Thumbnail" className="border border-white/10 w-12 h-12 rounded-lg object-cover" />
+                
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-3">
+                    <span className={`text-sm font-bold px-2 py-0.5 rounded ${item.prediction === 'REAL' ? 'text-green-400 bg-green-500/10' : 'text-red-400 bg-red-500/10'}`}>
+                      {item.prediction}
+                    </span>
+                    <span className="text-xs text-slate-500 font-mono">
+                      {new Date(item.id).toLocaleString()}
+                    </span>
+                  </div>
+                  <div className="w-full max-w-[150px] bg-slate-900 h-1.5 mt-2 rounded-full overflow-hidden opacity-50 group-hover:opacity-100 transition-opacity">
+                     <div className={`h-full ${item.confidence > 80 ? 'bg-green-500' : 'bg-red-500'}`} style={{width: `${item.confidence}%`}} />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4 pr-4">
+                 <span className="font-mono text-slate-400 font-bold hidden sm:block">{item.confidence.toFixed(1)}%</span>
+                 
+                 <button 
+                    onClick={() => alert(`Downloading Report for ID: ${item.id}...`)}
+                    className="p-2 text-slate-500 hover:text-indigo-400 hover:bg-indigo-500/10 rounded-lg transition-colors"
+                    title="Download Report"
+                 >
+                   <Download size={18} />
+                 </button>
+
+                 <button 
+                    onClick={() => onDeleteItem(item.id)}
+                    className="p-2 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                    title="Delete"
+                 >
+                   <X size={18} />
+                 </button>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const AboutPage = () => {
   const [showVisuals, setShowVisuals] = useState(false);
 
   return (
     <div className="max-w-5xl mx-auto pb-10">
       
-      {/* Modal Popup */}
       <AnimatePresence>
         {showVisuals && <VisualizationsModal onClose={() => setShowVisuals(false)} />}
       </AnimatePresence>
@@ -361,7 +713,6 @@ const AboutPage = () => {
           </div>
         </div>
 
-        {/* Metrics Grid */}
         <div className="mb-10">
           <div className="flex items-center gap-3 mb-6">
             <BarChart3 className="text-indigo-400" size={24} />
@@ -392,7 +743,6 @@ const AboutPage = () => {
           </div>
         </div>
 
-        {/* Footer */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-6 border-t border-white/5">
           <a 
             href="https://github.com/shovan-mondal/Deepfake-detection/releases/tag/v3.0.0" 
@@ -418,14 +768,90 @@ const AboutPage = () => {
   );
 };
 
-// --- 7. Main App Structure ---
+// ==================================================================================
+//  3. MAIN APP STRUCTURE (FIXED: HISTORY PERSISTENCE)
+// ==================================================================================
+
 export default function App() {
+  // 1. Initialize USER from LocalStorage immediately
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("deepscan_user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [history, setHistory] = useState([]);
   const [page, setPage] = useState("dashboard");
+
+  // 2. Initialize HISTORY from LocalStorage immediately (The Fix!)
+  // This prevents the empty [] from overwriting your data on refresh
+  const [history, setHistory] = useState(() => {
+    if (user?.email) {
+      const savedHistory = localStorage.getItem(`deepscan_history_${user.email}`);
+      return savedHistory ? JSON.parse(savedHistory) : [];
+    }
+    return [];
+  });
+
+  // --- EFFECT 1: Handle User Switching (Logout/Login) ---
+  // If the user changes while the app is open, load their specific history
+  useEffect(() => {
+    if (user?.email) {
+      const savedHistory = localStorage.getItem(`deepscan_history_${user.email}`);
+      setHistory(savedHistory ? JSON.parse(savedHistory) : []);
+    } else {
+      setHistory([]); // Clear history from view on logout
+    }
+  }, [user]); // Only runs when 'user' changes, NOT on simple refresh
+
+  // --- EFFECT 2: Auto-Save History ---
+  // Whenever 'history' or 'user' changes, save it to storage
+  useEffect(() => {
+    if (user?.email) {
+      localStorage.setItem(`deepscan_history_${user.email}`, JSON.stringify(history));
+    }
+  }, [history, user]);
+
+
+  // Handle Login Logic
+  const handleLogin = (userData) => {
+    localStorage.setItem("deepscan_user", JSON.stringify(userData));
+    setUser(userData);
+  };
+
+  // Handle Logout Logic
+  const handleLogout = () => {
+    if (confirm("Are you sure you want to log out?")) {
+      localStorage.removeItem("deepscan_user");
+      setUser(null);
+      setPage("dashboard");
+      setFile(null);
+      setPreview(null);
+      setResult(null);
+    }
+  };
+
+  const handleDeleteItem = (id) => {
+    if(confirm("Delete this scan result?")) {
+      const updatedHistory = history.filter(item => item.id !== id);
+      setHistory(updatedHistory);
+    }
+  };
+
+  const handleClearHistory = () => {
+    if(confirm("Are you sure you want to clear all history? This cannot be undone.")) {
+      setHistory([]);
+    }
+  };
+
+  const handleDeleteAccount = () => {
+    if(confirm("DANGER: Are you sure you want to delete your account? All history will be lost.")) {
+       localStorage.removeItem(`deepscan_history_${user.email}`);
+       handleLogout();
+    }
+  }
 
   const handleUpload = async () => {
     if (!file) return alert("Please select an image");
@@ -450,7 +876,7 @@ export default function App() {
           confidence: data.confidence,
           image: preview,
         },
-        ...prev.slice(0, 9), 
+        ...prev.slice(0, 50), 
       ]);
     } catch (e) {
       alert("Backend not reachable or Error occurred 😢");
@@ -459,11 +885,17 @@ export default function App() {
     }
   };
 
+  // RENDER: If no user, show Auth Page
+  if (!user) {
+    return <AuthPage onLogin={handleLogin} />;
+  }
+
+  // RENDER: If user exists, show Dashboard
   return (
     <div className="min-h-screen bg-[#020617] text-white flex font-sans selection:bg-indigo-500/30">
       
       {/* Sidebar */}
-      <aside className="sidebar fixed h-screen z-10 hidden md:flex w-[280px]">
+      <aside className="sidebar fixed h-screen z-10 hidden md:flex w-[280px] flex-col justify-between">
         <div>
           <div className="logo">
             <ShieldCheck className="text-indigo-500" size={32} />
@@ -478,15 +910,19 @@ export default function App() {
           </nav>
         </div>
 
-        <div className="sidebar-footer">
-          <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-900/50 border border-white/5 w-full">
-            <div className="relative">
-              <Activity size={18} className="text-green-400" />
-              <span className="absolute inset-0 bg-green-400 blur-[8px] opacity-40 animate-pulse"></span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xs font-bold text-white">System Online</span>
-              <span className="text-[10px] text-slate-400">v3.0.0 Stable</span>
+        <div className="space-y-4">
+          <SidebarButton icon={LogOut} label="Sign Out" isLogout onClick={handleLogout} />
+
+          <div className="sidebar-footer">
+            <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-900/50 border border-white/5 w-full">
+              <div className="relative">
+                <Activity size={18} className="text-green-400" />
+                <span className="absolute inset-0 bg-green-400 blur-[8px] opacity-40 animate-pulse"></span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs font-bold text-white">System Online</span>
+                <span className="text-[10px] text-slate-400">v3.0.0 Stable</span>
+              </div>
             </div>
           </div>
         </div>
@@ -504,9 +940,14 @@ export default function App() {
             </h1>
             <p className="text-slate-400 text-sm mt-1">Real-time deepfake detection engine</p>
           </div>
-          <span className="badge-online flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-white animate-pulse"/> LIVE
-          </span>
+          <div className="flex items-center gap-4">
+            <span className="text-sm font-medium text-slate-300 hidden sm:block">
+              {user.email}
+            </span>
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center font-bold text-white shadow-lg">
+              {user.email[0].toUpperCase()}
+            </div>
+          </div>
         </div>
 
         {/* Page Content */}
@@ -531,14 +972,19 @@ export default function App() {
               />
             )}
             
-            {page === "history" && <HistoryList history={history} />}
+            {page === "history" && (
+              <HistoryList 
+                history={history} 
+                onDeleteItem={handleDeleteItem} 
+                onClearHistory={handleClearHistory} 
+              />
+            )}
             
             {page === "settings" && (
-               <div className="card p-10 text-center opacity-60">
-                 <Settings size={48} className="mx-auto mb-4"/>
-                 <h3 className="text-xl font-bold">Settings</h3>
-                 <p>Configuration options coming in next update.</p>
-               </div>
+               <SettingsPage 
+                  user={user} 
+                  onDeleteAccount={handleDeleteAccount}
+               />
             )}
             
             {page === "about" && <AboutPage />}
