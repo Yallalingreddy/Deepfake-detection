@@ -40,8 +40,3 @@ PyYAML>=6.0.2
 # Deep Learning Tools
 h5py>=3.10.0
 tensorboard>=2.20.0
-
-# API Server
-fastapi>=0.115.0
-uvicorn[standard]>=0.30.0
-python-multipart>=0.0.9
